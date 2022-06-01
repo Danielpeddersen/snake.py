@@ -6,6 +6,7 @@ fps = 4
 
 WHITE = (255,255,255)
 GREEN = (0,255,0)
+RED = (255,0,0)
 
 CELL_SIZE = 40 # størelse 
 CELL_NUMBER = 15 # antall ruter 
@@ -14,6 +15,8 @@ WIDTH = CELL_SIZE * CELL_NUMBER # bredden på vindu som vi finner ved å fange a
 HEIGHT = CELL_SIZE * CELL_NUMBER # høyden på vindu som vi finner ved å fange antall ruter med størrelsen på hver rute
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT)) # oppretter spillervinduet
+
+apple = [7 * CELL_SIZE, 7 * CELL_SIZE, CELL_SIZE, CELL_SIZE] 
 
 slange = [7 * CELL_SIZE, 7 * CELL_SIZE, CELL_SIZE, CELL_SIZE] # grønn firkant = slange
 dir = "right"
@@ -31,12 +34,15 @@ def draw_cells(): # funksjon for å tegne cellene
     for y in range(CELL_NUMBER):
         pygame.draw.line(screen, (0,0,0), (0 , y * CELL_SIZE), (WIDTH, y * CELL_SIZE)) # tegner linjer som går vannrett, flytter seg selv CELL_SIZE ned for hver runde.
 
+def draw_apple():
+    pygame.draw.rect(screen, (RED), (0 * CELL_SIZE, 0 * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 
 def update(): # en funksjon som oppdaterer spillevinduet
     screen.fill(WHITE) # fyller spillevinduet med hvit farge
     draw_cells() # kjører draw_cells funskjonen
     draw_snake() # kjører draw_snake funksjonen
     pygame.display.update() # pygame funksjon for å opppdatere spillevinduet
+    draw_apple()
 
 
 main = True # varibel som innholder boolien som innholder veriden True
@@ -46,12 +52,14 @@ while main: # while løkke som går så lenge main variablen er sann.
         if event.type == pygame.KEYDOWN: # en if setning som sjekker om vi har trykket på tastaturet
             if event.key == pygame.K_ESCAPE: # hvis man har trykket på ESC knappen
                 main = False # da setter den main til ufalsk
-            if event.key == pygame.K_LEFT:
-                dir = "left"
-            elif event.key == pygame.K_RIGHT:
-                dir = "right"
-                slange[1] += 1 * CELL_SIZE
+            if event.key == pygame.K_LEFT: # kjør som at den grønne prikken kan gå til venstre
+                dir = "left" # dir endrer verdigen til venstre
+            elif event.key == pygame.K_RIGHT: # kjør som at den grønne prikken kan gå til venstre
+                dir = "right" # dir endrer verdigen til høyre
+                slange[1] += 1 * CELL_SIZE # gjør at prikken ikke beveger seg loddrett
     update() # kaller på den update funksjonen som oppdaterer spillevinduet.
+    
+
 
 
 
